@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>KHADRE221, administration</title>
+<style>
+:root{--bg:#000;--s:#0f0e0d;--g:#b99a62;--g2:#d8c3a5;--tx:#faf8f3;--mu:#a39b8b;--ln:rgba(185,154,98,.3);color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,sans-serif}
+h1,h2,h3{font-family:Georgia,serif;font-weight:400;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{background:#000;border:1px solid var(--ln);padding:10px;width:100%}
+button{cursor:pointer;background:none;border:1px solid var(--g);color:var(--g);padding:9px 16px}
+button.p{background:var(--g);color:#000}button.d{border-color:#c66;color:#e99}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ln);padding:14px 20px}
+header b{font:600 24px Georgia,serif;color:var(--g);letter-spacing:.1em}
+.tabs{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}.tabs button[aria-pressed=true]{background:var(--g);color:#000}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.k{background:var(--s);border:1px solid var(--ln);padding:16px}.k small{color:var(--mu)}.k b{display:block;font:600 26px Georgia,serif;color:var(--g2)}
+.o{background:var(--s);border:1px solid var(--ln);padding:16px;margin-bottom:14px;display:grid;grid-template-columns:1fr auto;gap:12px}
+.o.x{opacity:.55}.o small,.mu{color:var(--mu)}.o ul{margin:8px 0;padding-left:18px}
+.act{display:grid;gap:8px;min-width:190px;align-content:start}
+.pr{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;background:var(--s);border:1px solid var(--ln);padding:10px;margin-bottom:10px}
+.pr img{width:56px;height:56px;object-fit:cover}
+.fm{background:var(--s);border:1px solid var(--g);padding:18px;margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.fm label{display:grid;gap:4px;color:var(--mu);font-size:13px}.fm .w{grid-column:1/-1}
+#login{max-width:360px;margin:12vh auto;padding:20px;text-align:center;display:grid;gap:14px}
+.er{color:#e99;min-height:20px}
+table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid var(--ln);text-align:left}
+@media(max-width:700px){.o{grid-template-columns:1fr}}
+</style></head><body>
+<div id="login"><h1 style="color:var(--g);letter-spacing:.1em">KHADRE221</h1><p class="mu">Espace administrateur</p><input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password"><div class="er" id="le"></div><button class="p" id="lb">Se connecter</button></div>
+<div id="app" hidden>
+<header><b>KHADRE221</b><div><a href="/" style="color:var(--mu);margin-right:16px">Voir le site</a><button id="out">Déconnexion</button></div></header>
+<div class="wrap"><div class="tabs" id="tabs"></div><div class="er" id="msg"></div><div id="view"></div></div></div>
+<script>
+const $=s=>document.querySelector(s),fmt=n=>(n||0).toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g,' ')+' FCFA';
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let D=null,tab='orders',filt='',editing=null;
+async function api(u,b){const r=await fetch(u,b===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});if(r.status===401&&u!=='/api/admin/login'){show(false);throw new Error('Session expirée')}const j=await r.json();if(!r.ok)throw new Error(j.error||'Erreur');return j}
+function show(on){$('#login').hidden=on;$('#app').hidden=!on}
+function err(e){const m=$('#msg');m.textContent=e.message||'';setTimeout(()=>m.textContent='',5000)}
+async function load(){try{D=await api('/api/admin/data');show(true);render()}catch(e){}}
+$('#lb').onclick=async()=>{try{await api('/api/admin/login',{password:$('#pw').value});$('#pw').value='';load()}catch(e){$('#le').textContent=e.message}};
+$('#pw').onkeydown=e=>{if(e.key==='Enter')$('#lb').click()};
+$('#out').onclick=async()=>{await api('/api/admin/logout',{});show(false)};
+function render(){
+ $('#tabs').innerHTML=[['orders','Commandes'],['products','Produits'],['stats','Statistiques']].map(t=>`<button aria-pressed="${tab===t[0]}" onclick="tab='${t[0]}';render()">${t[1]}</button>`).join('');
+ $('#view').innerHTML=tab==='orders'?vOrders():tab==='products'?vProducts():vStats()}
+function vStats(){const s=D.stats;return `<div class="cards"><div class="k"><small>Commandes</small><b>${s.orders}</b></div><div class="k"><small>Chiffre d’affaires (hors annulées)</small><b>${fmt(s.revenue)}</b></div><div class="k"><small>Déjà encaissé</small><b>${fmt(s.paid)}</b></div></div>
+<h3>Par statut</h3><p>${D.statuses.map(x=>esc(x)+' : <b>'+(s.byStatus[x]||0)+'</b>').join(' · ')}</p>
+<h3 style="margin-top:20px">Parfums les plus vendus</h3><table>${s.top.map(t=>`<tr><td>${esc(t.n)}</td><td>${t.q} vendus</td><td>${fmt(t.ca)}</td></tr>`).join('')||'<tr><td class="mu">Aucune vente pour l’instant.</td></tr>'}</table>
+<h3 style="margin-top:20px">Stock bas (3 ou moins)</h3><p>${s.low.map(l=>esc(l.n)+' ('+l.q+')').join(', ')||'Aucun.'}</p>`}
+function vOrders(){
+ const list=D.orders.filter(o=>!filt||o.status===filt);
+ return `<p><select onchange="filt=this.value;render()" style="max-width:240px"><option value="">Tous les statuts</option>${D.statuses.map(s=>`<option${filt===s?' selected':''}>${s}</option>`).join('')}</select></p>`+(list.map(o=>`<div class="o${o.status==='Annulée'?' x':''}"><div><b>${esc(o.ref)}</b> <small>${new Date(o.date).toLocaleString('fr-FR')}</small><br><b>${esc(o.nom)}</b> · <a href="tel:+221${esc(o.tel)}" style="color:var(--g2)">${esc(o.tel)}</a><br><small>${esc(o.adr)}, ${esc(o.quartier)}, ${esc(o.ville)} (${esc(o.zone)})</small>${o.note?'<br><small>Note : '+esc(o.note)+'</small>':''}<ul>${o.lines.map(l=>`<li>${esc(l.br)} ${esc(l.n)} (${esc(l.s)}) x${l.q} : ${fmt(l.q*l.p)}</li>`).join('')}</ul><small>Livraison : ${fmt(o.fee)} · Paiement : ${esc(o.pay)}</small><br><b>Total : ${fmt(o.total)}</b></div>
+ <div class="act"><select onchange="setO('${o.ref}',{status:this.value})"${o.status==='Annulée'?' disabled':''}>${D.statuses.map(s=>`<option${o.status===s?' selected':''}>${s}</option>`).join('')}</select><label><input type="checkbox" style="width:auto"${o.paid?' checked':''} onchange="setO('${o.ref}',{paid:this.checked})"> Paiement reçu</label></div></div>`).join('')||'<p class="mu">Aucune commande.</p>')}
+async function setO(ref,b){try{await api('/api/admin/order',Object.assign({ref},b));D=await api('/api/admin/data');render()}catch(e){err(e);render()}}
+function vProducts(){
+ const e=editing;
+ const f=e?`<div class="fm"><h3 class="w">${e.id?'Modifier':'Nouveau parfum'}</h3>
+ ${[['n','Nom'],['br','Marque'],['b','Étiquette courte'],['p','Prix (FCFA)','number'],['o','Ancien prix si promo','number'],['q','Stock','number'],['e','Concentration'],['s','Format'],['f','Famille olfactive'],['top','Notes de tête'],['heart','Notes de cœur'],['base','Notes de fond']].map(x=>`<label>${x[1]}<input id="f_${x[0]}" type="${x[2]||'text'}" value="${esc(e[x[0]])}"></label>`).join('')}
+ <label>Catégorie<select id="f_c">${['Homme','Femme','Mixte'].map(c=>`<option${e.c===c?' selected':''}>${c}</option>`).join('')}</select></label>
+ <label>Étiquette<select id="f_t"><option value="">Aucune</option><option value="new"${e.t==='new'?' selected':''}>Nouveau</option><option value="promo"${e.t==='promo'?' selected':''}>Promotion</option></select></label>
+ <label class="w">Description<textarea id="f_d" rows="2">${esc(e.d)}</textarea></label>
+ <label>Photo${e.id?' (laisser vide pour garder l’actuelle)':''}<input id="f_img" type="file" accept="image/jpeg,image/png,image/webp"></label>
+ <label><span><input id="f_active" type="checkbox" style="width:auto"${e.active?' checked':''}> Visible sur le site</span></label>
+ <label><span><input id="f_bs" type="checkbox" style="width:auto"${e.bs?' checked':''}> Meilleure vente</span></label>
+ <div class="w"><button class="p" onclick="saveP()">Enregistrer</button> <button onclick="editing=null;render()">Annuler</button></div></div>`:'';
+ return f+`<p><button class="p" onclick="editing={active:true,c:'Mixte',e:'Eau de parfum',s:'100 ml',q:10};render()">Ajouter un parfum</button></p>`+D.products.map(p=>`<div class="pr"><img src="${esc(p.img)}" alt=""><div><b>${esc(p.br)} ${esc(p.n)}</b>${p.active?'':' <small class="mu">(masqué)</small>'}<br><small class="mu">${esc(p.c)} · ${fmt(p.p)}${p.o?' (avant '+fmt(p.o)+')':''} · stock : ${p.q}</small></div><div><button onclick="editing=D.products.find(x=>x.id===${p.id});render();scrollTo(0,0)">Modifier</button> <button class="d" onclick="delP(${p.id})">Supprimer</button></div></div>`).join('')}
+function readImg(file){return new Promise((ok,ko)=>{if(!file)return ok(null);const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=ko;r.readAsDataURL(file)})}
+async function saveP(){
+ try{
+  const g=i=>$('#f_'+i),b={id:editing.id};
+  ['n','br','b','e','s','f','top','heart','base','d','c','t'].forEach(k=>b[k]=g(k).value);
+  ['p','o','q'].forEach(k=>b[k]=+g(k).value||0);b.active=g('active').checked;b.bs=g('bs').checked;
+  b.image=await readImg(g('img').files[0]);
+  await api('/api/admin/product',b);editing=null;D=await api('/api/admin/data');render()
+ }catch(e){err(e)}}
+async function delP(id){if(!confirm('Supprimer ce parfum définitivement ? (Vous pouvez aussi le masquer.)'))return;try{await api('/api/admin/product/delete',{id});D=await api('/api/admin/data');render()}catch(e){err(e)}}
+load();
+</script></body></html>

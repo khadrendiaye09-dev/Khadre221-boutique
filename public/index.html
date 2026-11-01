@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KHADRE221, révélez votre signature olfactive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap">
+<style>
+:root{--bg:#000;--s1:#0b0b0b;--s2:#131110;--gold:#b99a62;--gold2:#d8c3a5;--tx:#faf8f3;--mu:#a39b8b;--ln:rgba(185,154,98,.3);
+--serif:"Cormorant Garamond",Georgia,serif;--sans:"Jost",system-ui,sans-serif;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--tx);font:300 16px/1.65 var(--sans)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:1.1}
+button{font:inherit;cursor:pointer;color:inherit}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font-family:var(--serif);font-size:26px;letter-spacing:.14em;color:var(--gold);text-decoration:none;font-weight:600}
+nav{display:flex;gap:28px}
+nav a{text-decoration:none;font-size:15px;color:var(--mu);transition:color .2s}
+nav a:hover{color:var(--gold2)}
+.tools{display:flex;gap:10px;align-items:center}
+.ic{background:none;border:1px solid var(--ln);border-radius:50%;width:44px;height:44px;display:grid;place-items:center;position:relative;color:var(--gold)}
+.ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5}
+#bdg,#fbdg{position:absolute;top:-4px;right:-4px;background:var(--gold);color:#000;font-size:11px;font-weight:500;min-width:19px;height:19px;border-radius:10px;display:grid;place-items:center}
+#burger{display:none}
+.hero{position:relative;overflow:hidden;background:radial-gradient(ellipse 60% 70% at 72% 55%,rgba(185,154,98,.22),transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:20px;min-height:calc(100vh - 68px);min-height:calc(100svh - 68px - env(safe-area-inset-top,0px));padding-top:30px;padding-bottom:50px}
+.hero h1{font-size:clamp(40px,8vw,110px);letter-spacing:.05em;color:var(--gold);font-weight:600;background:linear-gradient(100deg,#8d7240,#ece1c8 45%,#b99a62);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.slogan{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3vw,34px);margin:14px 0 18px}
+.hero p{max-width:46ch;color:var(--mu);margin:0 0 30px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{border:1px solid var(--gold);background:var(--gold);color:#000;padding:14px 30px;font-weight:500;letter-spacing:.04em;text-decoration:none;display:inline-block;transition:background .25s,color .25s}
+.btn:hover{background:var(--gold2)}
+.btn.o{background:none;color:var(--gold)}
+.btn.o:hover{background:rgba(185,154,98,.12)}
+.heroV{display:grid;place-items:center}
+.heroV svg{width:min(380px,80%);height:auto;filter:drop-shadow(0 30px 50px rgba(185,154,98,.25));animation:fl 7s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-14px)}}
+.in>*{opacity:0;transform:translateY(18px);animation:up .9s cubic-bezier(.2,.7,.2,1) forwards}
+.in>*:nth-child(2){animation-delay:.15s}.in>*:nth-child(3){animation-delay:.3s}.in>*:nth-child(4){animation-delay:.45s}
+@keyframes up{to{opacity:1;transform:none}}
+.vals{border-block:1px solid var(--ln);background:var(--s1)}
+.vals .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding-block:34px}
+.vals h3{font-size:24px;color:var(--gold2);margin-bottom:4px}
+.vals p{margin:0;color:var(--mu);font-size:15px}
+section{padding:84px 0}
+.hd{margin-bottom:34px;max-width:60ch}
+.hd h2{font-size:clamp(34px,5vw,54px)}
+.hd p{color:var(--mu);margin:10px 0 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px}
+.tab{background:none;border:1px solid var(--ln);padding:10px 22px;color:var(--mu);transition:.2s}
+.tab[aria-pressed=true]{background:var(--gold);color:#000;border-color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.card{background:var(--s2);border:1px solid var(--ln);display:flex;flex-direction:column}
+.vis{position:relative;background:radial-gradient(circle at 50% 45%,#2a2217,#0b0b0b 72%);padding:26px 0 10px;cursor:pointer;display:grid;place-items:center}
+.vis svg{width:58%;height:auto;transition:transform .5s}
+.vis:hover svg{transform:scale(1.05)}
+.tag{position:absolute;top:12px;left:12px;background:var(--gold);color:#000;font-size:12px;font-weight:500;padding:3px 11px}
+.tag.n{background:#fff}
+.ci{padding:18px 18px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.ci small{color:var(--mu);font-size:13px}
+.ci h3{font-size:25px}
+.pr{display:flex;gap:10px;align-items:baseline;margin:4px 0 12px}
+.pr b{color:var(--gold2);font-weight:500;font-size:18px}
+.pr s{color:var(--mu);font-size:14px}
+.row{display:flex;gap:8px;margin-top:auto}
+.row button{flex:1;padding:11px 6px;border:1px solid var(--gold);background:none;color:var(--gold);transition:.2s}
+.row .g{background:var(--gold);color:#000}
+.row button:hover{background:var(--gold2);color:#000}
+.ct{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.box{background:var(--s2);border:1px solid var(--ln);padding:28px}
+.box h3{font-size:27px;color:var(--gold2);margin-bottom:10px}
+.box p{margin:0 0 8px;color:var(--mu);font-size:15px}
+.box a{color:var(--gold)}
+footer{border-top:1px solid var(--ln);padding:40px 0;text-align:center;background:var(--s1)}
+footer .logo{font-size:30px}
+footer p{color:var(--mu);margin:8px 0 0;font-size:14px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:80;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.on{opacity:1;pointer-events:auto}
+#drw{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--s1);border-left:1px solid var(--ln);z-index:90;transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#drw.on{transform:none}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid var(--ln)}
+.dh h3{font-size:28px}
+#items{flex:1;overflow:auto;padding:8px 22px}
+.it{display:grid;grid-template-columns:64px 1fr auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--ln)}
+.it .th{background:radial-gradient(circle,#2a2217,#0b0b0b);display:grid;place-items:center;padding:4px}
+.it .th svg{width:46px;height:auto}
+.it b{font-family:var(--serif);font-weight:400;font-size:20px;display:block;line-height:1.2}
+.it span{color:var(--mu);font-size:14px}
+.qt{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qt button{width:28px;height:28px;border:1px solid var(--ln);background:none;color:var(--gold)}
+.rm{background:none;border:none;color:var(--mu);font-size:13px;text-decoration:underline}
+.empty{color:var(--mu);text-align:center;padding:60px 10px}
+.df{padding:20px 22px;border-top:1px solid var(--ln)}
+.tot{display:flex;justify-content:space-between;font-family:var(--serif);font-size:26px;margin-bottom:14px}
+.tot b{color:var(--gold2);font-weight:600}
+.wa{width:100%;background:#25d366;border:none;color:#04210f;font-weight:500;padding:15px;display:flex;gap:10px;justify-content:center;align-items:center}
+.wa:disabled{opacity:.4;cursor:not-allowed}
+.wa svg{width:20px;height:20px;fill:currentColor}
+#mod{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:16px;overflow:auto}
+#mod.on{display:grid}
+.mb{background:var(--s1);border:1px solid var(--gold);max-width:860px;width:100%;display:grid;grid-template-columns:1fr 1.1fr;position:relative;animation:pop .35s cubic-bezier(.2,.7,.2,1)}
+@keyframes pop{from{opacity:0;transform:scale(.96)}}
+.mb .vis{cursor:default;min-height:340px}
+.mb .vis svg{width:62%}
+.md{padding:34px 30px}
+.md h2{font-size:42px;margin:4px 0 6px}
+.md p{color:var(--mu);margin:0 0 16px}
+.nt{display:grid;gap:8px;margin-bottom:20px}
+.nt div{border-left:2px solid var(--gold);padding-left:12px;font-size:15px}
+.nt em{display:block;font-family:var(--serif);font-size:18px;color:var(--gold2)}
+.x{position:absolute;top:10px;right:10px;z-index:3;background:var(--bg)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--gold);color:#000;padding:12px 24px;z-index:120;opacity:0;transition:.3s;pointer-events:none;font-weight:500}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.vis{overflow:hidden}.vis:has(.ph){padding:0}.vis .ph{width:100%;height:auto;display:block;transition:transform .5s}.vis:hover .ph{transform:scale(1.04)}.mb .vis .ph{height:100%;object-fit:cover}
+.it .th img{width:60px;height:60px;object-fit:cover;display:block}
+.heroV img{width:min(460px,88%);height:auto;border:1px solid var(--ln);animation:fl 7s ease-in-out infinite;box-shadow:0 30px 60px rgba(185,154,98,.2)}
+.ctl{display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:10px;margin-bottom:26px;align-items:center}
+.ctl input,.ctl select,.fg input,.fg select,.fg textarea{background:#000;border:1px solid var(--ln);color:var(--tx);padding:12px;font:inherit;width:100%}
+.ctl label{white-space:nowrap;font-size:15px;color:var(--mu)}.ctl label input{width:auto}
+.stk{color:var(--gold2)}.stk.x{color:#e08a8a}
+.row+.row{margin-top:0}.row button:disabled,.btn:disabled{opacity:.4;cursor:not-allowed}
+.bnd{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 34px;padding:28px 22px;font-family:var(--serif);font-size:22px;color:var(--mu)}
+.err{color:#e08a8a;margin-bottom:12px;font-size:15px}
+.fg{display:grid;gap:10px;margin:18px 0}
+fieldset{border:1px solid var(--ln);margin:0 0 14px;padding:10px 14px;display:grid;gap:6px}
+.sm{background:var(--s2);padding:14px;margin-bottom:14px;font-size:15px;color:var(--mu)}.sm b{color:var(--gold2)}
+.mb.ck{grid-template-columns:1fr;max-width:560px}
+.fwa{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:55;background:#25d366;color:#04210f;font-weight:500;padding:13px 22px;border-radius:30px;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+details{border-bottom:1px solid var(--ln);padding:16px 0}summary{cursor:pointer;font-family:var(--serif);font-size:24px}details p{color:var(--mu);margin:10px 0 0;max-width:70ch}
+.ann{background:linear-gradient(90deg,#8d6f2c,#e8d08a,#8d6f2c);color:#000;text-align:center;font-size:13.5px;padding:8px 14px;font-weight:500}
+body{background:radial-gradient(ellipse 70% 40% at 50% 0,rgba(185,154,98,.07),transparent),var(--bg)}
+.logo::after{content:"";display:inline-block;width:6px;height:6px;background:var(--gold);transform:rotate(45deg);margin-left:10px;vertical-align:middle}
+.hero{background:radial-gradient(ellipse 55% 65% at 74% 52%,rgba(185,154,98,.26),transparent 70%),radial-gradient(ellipse 40% 50% at 8% 90%,rgba(185,154,98,.08),transparent 70%)}
+.heroV img{outline:1px solid var(--gold);outline-offset:14px}
+.pills{display:flex;gap:10px 24px;flex-wrap:wrap;margin-top:30px;color:var(--mu);font-size:14px}
+.pills span::before{content:"◆";color:var(--gold);font-size:8px;margin-right:8px;vertical-align:middle}
+.btn{letter-spacing:.06em;transition:background .25s,transform .25s,box-shadow .25s}.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(185,154,98,.3)}
+.vals .wrap{counter-reset:v}.vals .wrap>div{counter-increment:v}
+.vals h3::before{content:"0" counter(v);display:block;font:400 14px var(--sans);color:var(--gold);letter-spacing:.1em;margin-bottom:6px}
+.bnd{gap:10px 0}.bnd span{padding:0 20px}.bnd span+span{border-left:1px solid var(--ln)}
+.hd h2::after{content:"";display:block;width:70px;height:2px;background:linear-gradient(90deg,var(--gold),transparent);margin-top:16px}
+.card{transition:transform .35s,border-color .35s,box-shadow .35s;animation:up .7s both}
+.card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 0 1px rgba(185,154,98,.2)}
+.card:nth-child(2){animation-delay:.06s}.card:nth-child(3){animation-delay:.12s}.card:nth-child(4){animation-delay:.18s}.card:nth-child(5){animation-delay:.24s}.card:nth-child(6){animation-delay:.3s}
+.vis:has(.ph){padding:14px}.vis .ph{border:1px solid var(--ln)}
+.ci small:first-child{color:var(--gold);font:italic 18px var(--serif)}
+.ci h3{font-size:28px}
+.pr b{font:600 22px var(--serif);color:var(--gold2)}
+.row{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.row button{padding:12px 14px;letter-spacing:.03em}
+.hrt{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--ln);background:rgba(0,0,0,.65);color:var(--gold2);font-size:19px;line-height:1;display:grid;place-items:center;transition:transform .2s,background .2s}
+.hrt:hover{transform:scale(1.12);background:#000}
+.tab{letter-spacing:.03em}
+footer{border-top:0;border-image:linear-gradient(90deg,transparent,var(--gold),transparent) 1;border-top:1px solid;padding:54px 0}
+.ann{background:#0b0b0b;border-bottom:1px solid var(--ln);color:var(--gold2);font-weight:400;letter-spacing:.04em}
+.bar{display:grid;grid-template-columns:1fr auto 1fr}.bar nav{order:1}.bar .logo{order:2;font-size:30px;font-weight:500}.bar .tools{order:3;justify-self:end}
+nav a{letter-spacing:.03em}
+.eyebrow{color:var(--gold);font:italic 22px var(--serif);margin-bottom:6px}
+.hero h1{font-weight:500}
+.slogan{font-weight:400;color:var(--gold2)}
+section{padding:112px 0}
+.hd h2{font-weight:400;font-size:clamp(38px,5vw,60px)}
+.hd p{font-size:17px}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.on{opacity:1;transform:none}
+.col3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.col3 a{position:relative;aspect-ratio:4/5;overflow:hidden;display:block;border:1px solid var(--ln);text-decoration:none}
+.col3 img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.col3 a:hover img{transform:scale(1.06)}
+.col3 a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.88))}
+.col3 span{position:absolute;left:26px;bottom:24px;z-index:2}
+.col3 small{display:block;color:var(--gold2);font:italic 19px var(--serif)}
+.col3 b{font:400 40px var(--serif)}
+.grid{gap:30px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+.card{background:transparent}
+.ci{padding:22px 4px 8px}
+.vis:has(.ph){padding:0}.vis .ph{border:0}
+.card .vis{border:1px solid var(--ln)}
+.fl{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 30px;margin:28px 0}.fl a{color:var(--mu);text-decoration:none;transition:color .2s}.fl a:hover{color:var(--gold2)}
+@media(max-width:860px){
+#srchBtn{display:none}.bar{grid-template-columns:auto 1fr}.bar .logo{order:0;font-size:23px}.bar .tools{order:1;gap:8px}.ic{width:40px;height:40px}
+.col3{grid-template-columns:1fr}.col3 a{aspect-ratio:4/3}
+.pills{justify-content:center}.heroV img{outline-offset:9px}
+.ctl{grid-template-columns:1fr 1fr}.ctl input[type=search]{grid-column:1/-1}
+#burger{display:grid}
+nav{position:absolute;top:68px;left:0;right:0;background:#000;flex-direction:column;gap:0;padding:6px 22px 14px;border-bottom:1px solid var(--ln);display:none}
+nav.on{display:flex}
+nav a{padding:12px 0;font-size:17px}
+.hero .wrap{grid-template-columns:1fr;min-height:0;padding-top:34px;text-align:center}
+.hero p{margin-inline:auto}.cta{justify-content:center}
+.heroV{order:-1}.heroV svg{width:min(240px,60%)}.heroV img{width:min(320px,74%)}
+.vals .wrap,.ct{grid-template-columns:1fr}
+.mb{grid-template-columns:1fr}.mb .vis{min-height:240px}.md{padding:24px 20px}
+section{padding:60px 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in>*{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="ann">Livraison à Dakar et dans toutes les régions du Sénégal. Paiement par Wave, Orange Money ou à la livraison.</div>
+<header><div class="wrap bar">
+<a class="logo" href="#accueil">KHADRE221</a>
+<nav id="nav">
+<a href="#collections">Collections</a><a href="#catalogue">Catalogue</a><a href="#offres">Offres</a><a href="#livraison">Contact</a><a href="#infos">À propos</a>
+</nav>
+<div class="tools">
+<button class="ic" id="srchBtn" aria-label="Rechercher un parfum"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg></button><button class="ic" id="favBtn" aria-label="Mes favoris"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.500-7-10a4 4 0 0 1 7-2.500A4 4 0 0 1 19 10c0 5.500-7 10-7 10z"/></svg><span id="fbdg" style="display:none">0</span></button><button class="ic" id="cartBtn" aria-label="Ouvrir le panier"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.200L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="bdg">0</span></button>
+<button class="ic" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div></div></header>
+
+<main>
+<div class="hero" id="accueil"><div class="wrap">
+<div class="in">
+<div class="eyebrow">Parfumerie de luxe au Sénégal</div>
+<h1>KHADRE221</h1>
+<div class="slogan">Révélez votre signature olfactive</div>
+<p>Les plus grandes signatures de la parfumerie, sélectionnées pour vous : Dior, Chanel, Lattafa et bien d’autres. Chaque flacon est présenté dans un écrin noir et or, pour offrir ou pour s’offrir.</p>
+<div class="cta"><a class="btn" href="#catalogue">Découvrir nos parfums</a><a class="btn o" href="#offres">Voir les promotions</a></div><div class="pills"><span>Produits authentiques</span><span>Livraison au Sénégal</span><span>Wave et Orange Money</span></div>
+</div>
+<div class="heroV" id="heroV"></div>
+</div></div>
+
+<div class="vals"><div class="wrap">
+<div><h3>Parfums authentiques</h3><p>Des flacons originaux des plus grandes maisons, choisis pour leur qualité.</p></div>
+<div><h3>Tenue longue durée</h3><p>Des concentrations généreuses pour un sillage qui dure toute la journée.</p></div>
+<div><h3>Écrin de luxe</h3><p>Chaque commande est emballée avec soin, prête à être offerte.</p></div>
+</div></div>
+
+<div class="bnd" id="brands"></div>
+<section id="collections"><div class="wrap"><div class="hd rv"><h2>Nos collections</h2><p>Trois univers olfactifs, une même exigence d’élégance.</p></div><div class="col3 rv" id="cols"></div></div></section>
+<section id="best" style="padding-top:0"><div class="wrap"><div class="hd rv"><h2>Meilleures ventes</h2><p>Les parfums les plus demandés par nos clients.</p></div><div class="grid" id="bestg"></div></div></section>
+<section id="catalogue"><div class="wrap">
+<div class="hd rv"><h2>Le catalogue</h2><p>Trois univers olfactifs. Choisissez le vôtre, ou celui de la personne à qui vous offrez.</p></div>
+<div class="tabs" id="ftabs"></div>
+<div class="ctl"><input id="q" type="search" placeholder="Rechercher un parfum ou une marque" aria-label="Rechercher"><select id="br" aria-label="Marque"></select><select id="srt" aria-label="Trier"><option value="">Trier par</option><option value="pa">Prix croissant</option><option value="pd">Prix décroissant</option><option value="pop">Popularité</option><option value="new">Nouveautés</option></select><input id="mx" type="number" min="0" step="1000" placeholder="Prix max (FCFA)" aria-label="Prix maximum"><label><input type="checkbox" id="st"> En stock</label></div>
+<div class="grid" id="cat"></div>
+</div></section>
+
+<section id="offres" style="background:var(--s1);border-block:1px solid var(--ln)"><div class="wrap">
+<div class="hd rv"><h2>Nouveautés et promotions</h2><p>Les dernières créations de la maison et nos prix réduits du moment.</p></div>
+<div class="tabs" id="otabs"></div>
+<div class="grid" id="off"></div>
+</div></section>
+
+<section id="livraison"><div class="wrap">
+<div class="hd rv"><h2>Contact et livraison</h2><p>Une question, un conseil pour choisir votre parfum ? Appelez-nous, nous répondons rapidement.</p></div>
+<div class="ct rv">
+<div class="box"><h3>Nous contacter</h3><p>Téléphone : <a href="tel:+221764018168">+221 76 401 81 68</a></p><p>Disponible chaque jour de 8 h à 20 h.</p><p>Conseils personnalisés et choix de cadeaux.</p></div>
+<div class="box"><h3>Livraison</h3><p>Livraison à Dakar sous 24 à 48 h et dans les régions du Sénégal.</p><p>Frais selon la zone, indiqués avant la validation.</p><p>Nous vous appelons pour confirmer votre commande.</p></div>
+<div class="box"><h3>Paiement et garanties</h3><p>Wave, Orange Money ou paiement à la livraison.</p><p>Produits authentiques, emballage cadeau offert.</p><p>Une question sur votre commande ? Nous vous répondons.</p></div>
+</div></div></section>
+<section id="infos" style="border-top:1px solid var(--ln)"><div class="wrap"><div class="hd rv"><h2>À propos et informations</h2></div>
+<details><summary>À propos de KHADRE221</summary><p>KHADRE221 est une boutique de parfumerie en ligne au Sénégal. Nous proposons des parfums de grandes marques pour hommes, femmes et mixtes, livrés à Dakar et dans les régions.</p></details>
+<details><summary>FAQ</summary><p>Comment commander ? Ajoutez vos parfums au panier, remplissez le formulaire de livraison, puis validez votre commande : notre équipe vous appelle pour la confirmer. Comment payer ? Par Wave, Orange Money ou à la livraison, selon ce que vous choisissez lors de la confirmation.</p></details>
+<details><summary>Conditions générales de vente</summary><p>Les prix sont indiqués en FCFA. Une commande est définitive après confirmation par notre équipe. Les disponibilités sont indiquées sur chaque fiche produit. Texte à faire valider avant la mise en ligne.</p></details>
+<details><summary>Politique de livraison</summary><p>Dakar : 24 à 48 h. Banlieue : 24 à 48 h. Autres régions : 2 à 4 jours. Les frais dépendent de la zone et sont affichés avant l’envoi de la commande.</p></details>
+<details><summary>Retours et remboursement</summary><p>Un produit non ouvert et non utilisé peut être retourné après accord de notre équipe. Délais et modalités à adapter à votre activité.</p></details>
+<details><summary>Politique de confidentialité</summary><p>Votre nom, votre numéro et votre adresse servent uniquement à préparer et livrer votre commande. Ils ne sont pas vendus à des tiers.</p></details>
+</div></section>
+</main>
+
+<footer><div class="wrap"><div class="logo">KHADRE221</div><p>Révélez votre signature olfactive</p><div class="fl"><a href="#collections">Collections</a><a href="#catalogue">Catalogue</a><a href="#offres">Offres</a><a href="#livraison">Livraison</a><a href="#infos">À propos</a><a href="#" onclick="openTrack();return false">Suivre ma commande</a><a href="#infos">FAQ</a><a href="#infos">Conditions de vente</a><a href="#infos">Confidentialité</a></div><p>© 2026 KHADRE221. Tous droits réservés.</p></div></footer>
+
+<div class="ov" id="ov"></div>
+<aside id="drw" aria-label="Panier">
+<div class="dh"><h3>Votre panier</h3><button class="ic" id="closeC" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+<div id="items"></div>
+<div class="df"><div class="tot"><span>Total</span><b id="tot">0 FCFA</b></div>
+<button class="wa" id="order"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.600 15L2 22l5.200-1.400A10 10 0 1 0 12 2zm5.200 14.200c-.2.600-1.300 1.200-1.800 1.200-.5.100-1 .2-3.300-.7-2.800-1.100-4.500-3.900-4.700-4.100-.1-.2-1.100-1.500-1.100-2.800s.7-2 .9-2.300c.3-.3.600-.3.800-.3h.600c.2 0 .4 0 .6.500l.8 2c.1.2.1.400 0 .600l-.4.600-.4.400c-.1.200-.3.400-.1.700.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.5.100.7-.1l1-1.200c.2-.3.400-.2.700-.1l2 1c.3.100.5.200.5.300.1.200.1.700-.1 1.200z"/></svg>Passer la commande</button></div>
+</aside>
+<div id="mod" role="dialog" aria-modal="true"></div>
+<div id="toast"></div>
+
+<script>
+var PHONE="+221 76 401 81 68";
+var P=[];
+var cart={},flt="Tous",oft="new",gid=0;
+try{cart=JSON.parse(localStorage.getItem("kh221")||"{}")||{}}catch(e){cart={}}
+var favs={};try{favs=JSON.parse(localStorage.getItem("kh221f")||"{}")||{}}catch(e){favs={}}
+var $=function(s){return document.querySelector(s)};
+function fmt(n){return n.toLocaleString("fr-FR").replace(/[\u202f\u00a0]/g," ")+" FCFA"}
+function bottle(p){if(p.img)return '<img class="ph" src="'+p.img+'" alt="Flacon '+p.br+' '+p.n+'" loading="lazy" width="600" height="600">';
+ var g="g"+(++gid),c=p.col,b;
+ if(p.sh==0)b='<rect x="28" y="64" width="64" height="78" rx="7"/>';
+ else if(p.sh==1)b='<ellipse cx="60" cy="102" rx="38" ry="40"/>';
+ else if(p.sh==2)b='<rect x="37" y="52" width="46" height="90" rx="5"/>';
+ else b='<polygon points="60,58 92,82 92,124 60,146 28,124 28,82"/>';
+ return '<svg viewBox="0 0 120 170" role="img" aria-label="Flacon '+p.n+'"><defs><linearGradient id="'+g+'" x1="0" x2="1"><stop offset="0" stop-color="'+c+'" stop-opacity=".95"/><stop offset=".5" stop-color="'+c+'" stop-opacity=".6"/><stop offset="1" stop-color="#000" stop-opacity=".75"/></linearGradient><linearGradient id="'+g+'k" x1="0" x2="1"><stop offset="0" stop-color="#9c7c33"/><stop offset=".45" stop-color="#f2dc9c"/><stop offset="1" stop-color="#a98532"/></linearGradient></defs>'
+ +'<ellipse cx="60" cy="156" rx="34" ry="5" fill="#000" opacity=".6"/>'
+ +'<g fill="url(#'+g+')" stroke="#c8a557" stroke-width="1.2">'+b+'</g>'
+ +'<rect x="50" y="42" width="20" height="18" fill="url(#'+g+'k)"/>'
+ +'<rect x="44" y="14" width="32" height="30" rx="3" fill="url(#'+g+'k)"/>'
+ +'<path d="M50 20v20" stroke="#fff" stroke-opacity=".5" stroke-width="2"/>'
+ +'<rect x="34" y="94" width="52" height="26" fill="#000" fill-opacity=".55" stroke="#c8a557" stroke-width=".6"/>'
+ +'<text x="60" y="108" text-anchor="middle" font-family="Georgia,serif" font-size="6" fill="#ecd592" letter-spacing="1">'+p.b+'</text>'
+ +'<text x="60" y="116" text-anchor="middle" font-family="Georgia,serif" font-size="4" fill="#c8a557">'+p.n+'</text>'
+ +'<path d="M36 76v50" stroke="#fff" stroke-opacity=".28" stroke-width="2.500" stroke-linecap="round"/></svg>'}
+function card(p){
+ var tag=p.t=="promo"?'<span class="tag">-'+Math.round(100-p.p/p.o*100)+' %</span>':p.t=="new"?'<span class="tag n">Nouveau</span>':"";
+ return '<article class="card"><div class="vis" onclick="openP('+p.id+')">'+tag+'<button class="hrt" onclick="event.stopPropagation();fav('+p.id+')" aria-label="'+(favs[p.id]?"Retirer des favoris":"Ajouter aux favoris")+'">'+(favs[p.id]?"♥":"♡")+'</button>'+bottle(p)+'</div><div class="ci"><small>'+p.br+'</small><h3>'+p.n+'</h3><small>'+p.c+", "+p.f+'</small><div class="pr"><b>'+fmt(p.p)+'</b>'+(p.o?'<s>'+fmt(p.o)+'</s>':"")+'</div>'+stk(p)+'<div class="row"><button onclick="openP('+p.id+')">Détails</button><button class="g" onclick="add('+p.id+')"'+(p.q?"":" disabled")+'>Ajouter au panier</button></div></div></article>'}
+function tabs(el,arr,cur,fn){$(el).innerHTML=arr.map(function(a){return '<button class="tab" aria-pressed="'+(a[0]==cur)+'" onclick="'+fn+'(\''+a[0]+'\')">'+a[1]+'</button>'}).join("")}
+function setF(v){flt=v;rCat()}
+function setO(v){oft=v;rOff()}
+function rCat(){
+ tabs("#ftabs",[["Tous","Tous"],["Homme","Hommes"],["Femme","Femmes"],["Mixte","Mixtes"],["Fav","Favoris"]],flt,"setF");
+ var q=$("#q").value.toLowerCase(),b=$("#br").value,m=+$("#mx").value||1e9,o=$("#srt").value,k=$("#st").checked;
+ var a=P.filter(function(p){return(flt=="Tous"||(flt=="Fav"?favs[p.id]:p.c==flt))&&(!q||(p.br+" "+p.n).toLowerCase().indexOf(q)>-1)&&(!b||p.br==b)&&p.p<=m&&(!k||p.q>0)});
+ if(o=="pa")a.sort(function(x,y){return x.p-y.p});
+ if(o=="pd")a.sort(function(x,y){return y.p-x.p});
+ if(o=="pop")a.sort(function(x,y){return (y.bs||0)-(x.bs||0)});
+ if(o=="new")a.sort(function(x,y){return (y.t=="new")-(x.t=="new")});
+ $("#cat").innerHTML=a.length?a.map(card).join(""):'<p class="empty">Aucun parfum ne correspond à votre recherche.</p>'}
+function rOff(){
+ tabs("#otabs",[["new","Nouveautés"],["promo","Promotions"]],oft,"setO");
+ $("#off").innerHTML=P.filter(function(p){return oft=="best"?p.bs:p.t==oft}).map(card).join("")}
+function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove("on")},1800)}
+function save(){try{localStorage.setItem("kh221",JSON.stringify(cart))}catch(e){}}
+function byId(i){return P.filter(function(p){return p.id==i})[0]}
+function add(i,q){if((cart[i]||0)+(q||1)>byId(i).q){toast("Stock maximum atteint");return}cart[i]=(cart[i]||0)+(q||1);save();rCart();toast("Ajouté au panier")}
+function chg(i,d){if(d>0&&(cart[i]||0)>=byId(i).q){toast("Stock maximum atteint");return}cart[i]=(cart[i]||0)+d;if(cart[i]<=0)delete cart[i];save();rCart()}
+function del(i){delete cart[i];save();rCart()}
+function rCart(){
+ var ids=Object.keys(cart),n=0,t=0;
+ $("#items").innerHTML=ids.length?ids.map(function(i){var p=byId(i),q=cart[i];n+=q;t+=q*p.p;
+  return '<div class="it"><div class="th">'+bottle(p)+'</div><div><b>'+p.n+'</b><span>'+fmt(p.p)+' · '+p.s+'</span><div class="qt"><button onclick="chg('+i+',-1)" aria-label="Retirer une unité">−</button>'+q+'<button onclick="chg('+i+',1)" aria-label="Ajouter une unité">+</button></div></div><button class="rm" onclick="del('+i+')">Retirer</button></div>'}).join(""):'<div class="empty">Votre panier est vide.<br>Ajoutez un parfum depuis le catalogue.</div>';
+ $("#bdg").textContent=n;$("#tot").textContent=fmt(t);$("#order").disabled=!ids.length}
+function stk(p){return p.q<1?'<small class="stk x">Rupture de stock</small>':p.q<6?'<small class="stk">Plus que '+p.q+' en stock</small>':'<small class="stk">En stock</small>'}
+function fav(i){if(favs[i])delete favs[i];else favs[i]=1;try{localStorage.setItem("kh221f",JSON.stringify(favs))}catch(e){}rCat();rOff();rBest();updF();toast(favs[i]?"Ajouté aux favoris":"Retiré des favoris")}
+var Z=[["Dakar centre",2000,"24 h"],["Banlieue de Dakar",3000,"24 à 48 h"],["Autres régions du Sénégal",5000,"2 à 4 jours"]];
+function sub(){var t=0;Object.keys(cart).forEach(function(i){t+=cart[i]*byId(i).p});return t}
+function upd(){var z=Z[+$("#zn").value],t=sub();$("#sm").innerHTML="Sous-total : "+fmt(t)+"<br>Livraison : "+fmt(z[1])+" (délai estimé : "+z[2]+")<br><b>Total : "+fmt(t+z[1])+"</b>"}
+function openCk(){
+ $("#drw").classList.remove("on");
+ $("#mod").innerHTML='<div class="mb ck"><button class="ic x" onclick="closeAll()" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><form class="md" onsubmit="return sendOrder(event)"><h2>Votre commande</h2><div class="fg"><input name="nom" required placeholder="Nom et prénom" autocomplete="name"><input name="tel" required type="tel" placeholder="Numéro de téléphone" autocomplete="tel"><select name="zone" id="zn" onchange="upd()">'+Z.map(function(z,i){return '<option value="'+i+'">'+z[0]+'</option>'}).join("")+'</select><input name="ville" required placeholder="Ville ou commune"><input name="quartier" required placeholder="Quartier"><input name="adr" required placeholder="Adresse de livraison"><textarea name="note" rows="2" placeholder="Instructions pour la livraison (facultatif)"></textarea></div><fieldset><legend>Moyen de paiement</legend><label><input type="radio" name="pay" value="Wave" checked> Wave</label><label><input type="radio" name="pay" value="Orange Money"> Orange Money</label><label><input type="radio" name="pay" value="Paiement à la livraison"> Paiement à la livraison</label></fieldset><div class="sm" id="sm"></div><div class="err" id="err" role="alert"></div><button class="btn" style="width:100%;cursor:pointer">Confirmer ma commande</button></form></div>';
+ $("#ov").classList.add("on");$("#mod").classList.add("on");upd()}
+function sendOrder(e){
+ e.preventDefault();
+ var f=e.target,btn=f.querySelector(".btn");
+ var d={nom:f.nom.value,tel:f.tel.value,zone:+f.zone.value,ville:f.ville.value,quartier:f.quartier.value,adr:f.adr.value,note:f.note.value,pay:f.pay.value,hp:"",items:Object.keys(cart).map(function(i){return{id:+i,q:cart[i]}})};
+ btn.disabled=true;btn.textContent="Envoi en cours…";$("#err").textContent="";
+ fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||"Erreur");return j})}).then(function(j){
+  cart={};save();rCart();load();
+  $("#mod").innerHTML='<div class="mb ck"><button class="ic x" onclick="closeAll()" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="md"><h2>Merci d’avoir choisi KHADRE221 !</h2><p>Votre commande a bien été enregistrée. Notre équipe vous contactera pour confirmer votre livraison.</p><p>Numéro de commande : <b style="color:var(--gold2)">'+j.ref+'</b><br>Gardez-le pour suivre votre commande.</p><button class="btn" style="cursor:pointer" onclick="closeAll()">Continuer mes achats</button></div></div>'
+ }).catch(function(er){
+  btn.disabled=false;btn.textContent="Confirmer ma commande";
+  $("#err").textContent=(er&&er.message&&er.message!="Failed to fetch")?er.message:"Votre commande n’a pas pu être envoyée. Réessayez dans un instant ou appelez-nous au "+PHONE+"."});
+ return false}
+function openTrack(){
+ $("#drw").classList.remove("on");
+ $("#mod").innerHTML='<div class="mb ck"><button class="ic x" onclick="closeAll()" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><form class="md" onsubmit="return doTrack(event)"><h2>Suivre ma commande</h2><div class="fg"><input name="ref" required placeholder="Numéro de commande (ex. KH-00012)"><input name="tel" required type="tel" placeholder="Votre numéro de téléphone"></div><div class="err" id="err" role="alert"></div><div class="sm" id="trk" style="display:none"></div><button class="btn" style="width:100%;cursor:pointer">Voir le statut</button></form></div>';
+ $("#ov").classList.add("on");$("#mod").classList.add("on")}
+function doTrack(e){
+ e.preventDefault();var f=e.target;
+ fetch("/api/track?ref="+encodeURIComponent(f.ref.value)+"&tel="+encodeURIComponent(f.tel.value)).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||"Erreur");return j})}).then(function(j){
+  $("#err").textContent="";var t=$("#trk");t.style.display="block";
+  t.innerHTML="Commande <b>"+j.ref+"</b><br>Statut : <b>"+j.status+"</b><br>Passée le "+new Date(j.date).toLocaleDateString("fr-FR")+"<br>Total : "+fmt(j.total)
+ }).catch(function(er){$("#trk").style.display="none";$("#err").textContent=er.message=="Failed to fetch"?"Service indisponible, réessayez.":er.message});
+ return false}
+function openC(){$("#drw").classList.add("on");$("#ov").classList.add("on")}
+function closeAll(){$("#drw").classList.remove("on");$("#ov").classList.remove("on");$("#mod").classList.remove("on")}
+function openP(i){
+ var p=byId(i);
+ $("#mod").innerHTML='<div class="mb"><button class="ic x" onclick="closeAll()" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="vis">'+bottle(p)+'</div><div class="md"><small style="color:var(--mu)">'+p.br+", "+p.c+", "+p.f+'</small><h2>'+p.n+'</h2><div class="pr"><b style="font-size:24px">'+fmt(p.p)+'</b>'+(p.o?'<s>'+fmt(p.o)+'</s>':"")+'</div><p>'+p.d+' '+p.e+', '+p.s+'.</p><div class="nt"><div><em>Notes de tête</em>'+p.top+'</div><div><em>Notes de cœur</em>'+p.heart+'</div><div><em>Notes de fond</em>'+p.base+'</div></div><button class="btn" style="width:100%;cursor:pointer" onclick="add('+p.id+');closeAll();openC()"'+(p.q?"":" disabled")+'>Ajouter au panier</button></div></div>';
+ $("#ov").classList.add("on");$("#mod").classList.add("on")}
+$("#heroV").innerHTML='<img class="ph" src="/img/9.jpg" alt="Baccarat Rouge 540, Maison Francis Kurkdjian" width="600" height="600">';
+$("#cartBtn").onclick=openC;$("#closeC").onclick=closeAll;$("#order").onclick=openCk;
+$("#ov").onclick=closeAll;
+$("#mod").onclick=function(e){if(e.target==this)closeAll()};
+$("#burger").onclick=function(){$("#nav").classList.toggle("on")};
+$("#nav").onclick=function(){this.classList.remove("on")};
+document.addEventListener("keydown",function(e){if(e.key=="Escape")closeAll()});
+function fillBr(){var BR=[];P.forEach(function(p){if(BR.indexOf(p.br)<0)BR.push(p.br)});
+$("#br").innerHTML='<option value="">Toutes les marques</option>'+BR.map(function(b){return '<option>'+b+'</option>'}).join("");
+$("#brands").innerHTML=BR.map(function(b){return '<span>'+b+'</span>'}).join("");}
+["q","br","srt","mx","st"].forEach(function(i){$("#"+i).oninput=rCat});
+function rBest(){$("#bestg").innerHTML=P.filter(function(p){return p.bs}).slice(0,4).map(card).join("")}
+function updF(){var n=Object.keys(favs).length,b=$("#fbdg");b.textContent=n;b.style.display=n?"grid":"none"}
+var CL=[["Homme","Hommes",1,"Pour lui"],["Femme","Femmes",6,"Pour elle"],["Mixte","Mixtes",9,"Pour tous"]];
+$("#cols").innerHTML=CL.map(function(c){return '<a href="#catalogue" onclick="setF(\''+c[0]+'\')"><img src="/img/'+c[2]+'.jpg" alt="Collection '+c[1]+'" loading="lazy"><span><small>'+c[3]+'</small><b>'+c[1]+'</b></span></a>'}).join("");
+$("#srchBtn").onclick=function(){$("#catalogue").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#q").focus()},600)};
+$("#favBtn").onclick=function(){setF("Fav");$("#catalogue").scrollIntoView({behavior:"smooth"})};
+var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target)}})},{threshold:.1}):null;
+document.querySelectorAll(".rv").forEach(function(el){io?io.observe(el):el.classList.add("on")});
+function load(){fetch("/api/products").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){P=d.products;Z=d.zones;Object.keys(cart).forEach(function(i){var p=byId(i);if(!p||p.q<1)delete cart[i];else if(cart[i]>p.q)cart[i]=p.q});save();fillBr();rCat();rOff();rBest();rCart()}).catch(function(){$("#cat").innerHTML='<p class="empty">Le catalogue est momentanément indisponible. Veuillez réessayer dans un instant.</p>'})}
+updF();load();
+</script>
+</body>
+</html>
