@@ -11,6 +11,17 @@ save();
 const MIME={'.html':'text/html; charset=utf-8','.jpg':'image/jpeg','.png':'image/png','.webp':'image/webp','.ico':'image/x-icon'};
 const STATUS=['Nouvelle','Confirmée','En livraison','Livrée','Annulée'],PAY=['Wave','Orange Money','Paiement à la livraison'];
 const sessions=new Map(),hits=new Map();
+// Notification par e-mail à chaque nouvelle commande (service Resend, facultatif)
+const RESEND=process.env.RESEND_API_KEY,NOTIFY=process.env.NOTIFY_EMAIL,FROM=process.env.NOTIFY_FROM||'KHADRE221 <onboarding@resend.dev>',RESEND_URL=process.env.RESEND_API_URL||'https://api.resend.com/emails';
+const fmt=n=>n.toLocaleString('fr-FR').replace(/[\u202f\u00a0]/g,' ')+' FCFA';
+async function notifyMail(o){
+  if(!RESEND||!NOTIFY)return;
+  const text=['Nouvelle commande '+o.ref,'','Client : '+o.nom,'Téléphone : '+o.tel,'Adresse : '+o.adr+', '+o.quartier+', '+o.ville+' ('+o.zone+')',o.note?'Instructions : '+o.note:'','Paiement souhaité : '+o.pay,'','Articles :'].concat(o.lines.map(l=>'- '+l.br+' '+l.n+' ('+l.s+') x'+l.q+' : '+fmt(l.q*l.p))).concat(['','Sous-total : '+fmt(o.sub),'Livraison : '+fmt(o.fee),'Total : '+fmt(o.total),'','Gérez la commande dans l’administration (/admin).']).filter((x,i,a)=>x!==''||a[i-1]!=='').join('\n');
+  try{
+    const r=await fetch(RESEND_URL,{method:'POST',headers:{Authorization:'Bearer '+RESEND,'Content-Type':'application/json'},body:JSON.stringify({from:FROM,to:[NOTIFY],subject:'Nouvelle commande '+o.ref+' : '+fmt(o.total),text})});
+    if(!r.ok)console.error('Notification e-mail refusée ('+r.status+') : '+(await r.text()));
+  }catch(e){console.error('Notification e-mail impossible : '+e.message)}
+}
 const limited=(k,max,ms)=>{const n=Date.now(),a=(hits.get(k)||[]).filter(t=>n-t<ms);a.push(n);hits.set(k,a);return a.length>max};
 const ipOf=r=>(r.headers['x-forwarded-for']||r.socket.remoteAddress||'').split(',')[0].trim();
 const send=(res,c,o)=>{res.writeHead(c,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(o))};
@@ -20,6 +31,17 @@ const num=(v,max)=>{v=Math.round(+v);return Number.isFinite(v)&&v>=0&&v<=max?v:0
 const safeEq=(a,b)=>{const x=crypto.createHash('sha256').update(a).digest(),y=crypto.createHash('sha256').update(b).digest();return crypto.timingSafeEqual(x,y)};
 const isAdmin=req=>{const m=/(?:^|; )kh_s=([a-f0-9]+)/.exec(req.headers.cookie||'');return !!m&&(sessions.get(m[1])||0)>Date.now()};
 const pub=p=>({id:p.id,br:p.br,b:p.b,n:p.n,c:p.c,p:p.p,o:p.o||0,t:p.t||'',bs:p.bs||0,q:p.q,e:p.e,s:p.s,f:p.f,top:p.top,heart:p.heart,base:p.base,d:p.d,img:p.img||''});
+// Notification WhatsApp gratuite vers votre propre numéro (service CallMeBot, facultatif)
+const CMB_PHONE=process.env.CALLMEBOT_PHONE,CMB_KEY=process.env.CALLMEBOT_KEY,CMB_URL=process.env.CALLMEBOT_URL||'https://api.callmebot.com/whatsapp.php';
+async function notifyWhatsApp(o){
+  if(!CMB_PHONE||!CMB_KEY)return;
+  const text='Nouvelle commande '+o.ref+'\n'+o.nom+' ('+o.tel+')\n'+o.lines.map(l=>l.br+' '+l.n+' x'+l.q).join(', ')+'\nTotal : '+fmt(o.total)+'\nPaiement : '+o.pay+'\nDétails dans /admin';
+  try{
+    const r=await fetch(CMB_URL+'?phone='+encodeURIComponent(CMB_PHONE)+'&text='+encodeURIComponent(text)+'&apikey='+encodeURIComponent(CMB_KEY));
+    if(!r.ok)console.error('Notification WhatsApp refusée ('+r.status+')');
+  }catch(e){console.error('Notification WhatsApp impossible : '+e.message)}
+}
+function notify(o){notifyMail(o);notifyWhatsApp(o)}
 function createOrder(b){
   if(b.hp)return{ref:'KH-00000'};
   const nom=str(b.nom,80),ville=str(b.ville,60),quartier=str(b.quartier,60),adr=str(b.adr,160),note=str(b.note,300),pay=str(b.pay,40);
@@ -70,7 +92,7 @@ async function api(req,res,u){
   if(m==='GET'&&p==='/api/products')return send(res,200,{products:db.products.filter(x=>x.active).map(pub),zones:db.zones});
   if(m==='POST'&&p==='/api/orders'){
     if(limited('o'+ip,8,36e5))return send(res,429,{error:'Trop de commandes depuis votre connexion. Réessayez plus tard ou appelez-nous.'});
-    return send(res,200,createOrder(await body(req)));
+    const out=createOrder(await body(req));if(out.ref!=='KH-00000')notify(db.orders[0]);return send(res,200,out);
   }
   if(m==='GET'&&p==='/api/track'){
     if(limited('t'+ip,20,6e5))return send(res,429,{error:'Trop de tentatives, réessayez dans quelques minutes.'});
