@@ -202,19 +202,56 @@ nav a{padding:12px 0;font-size:17px}
 section{padding:60px 0}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.in>*{opacity:1;transform:none}}
+
+/* ===== En-tête KHADRE221 ===== */
+html{scroll-padding-top:calc(80px + env(safe-area-inset-top,0px))}
+.hdr{background:rgba(0,0,0,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:0;transition:background .35s,box-shadow .35s}
+.hdr::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(185,154,98,.55) 20%,rgba(216,195,165,.85) 50%,rgba(185,154,98,.55) 80%,transparent)}
+.hdr.scrolled{background:rgba(0,0,0,.97);box-shadow:0 12px 32px rgba(0,0,0,.55)}
+.hdr-in{max-width:1280px;margin:0 auto;padding:0 28px;height:88px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;transition:height .35s}
+.hdr.scrolled .hdr-in{height:66px}
+.hlogo{justify-self:start;display:inline-flex;align-items:baseline;text-decoration:none;font:500 30px var(--serif);letter-spacing:.2em;color:var(--tx);white-space:nowrap;transition:font-size .35s,color .3s}
+.hlogo b{font-weight:600;font-style:italic;letter-spacing:.06em;color:var(--gold);margin-left:.18em}
+.hdr.scrolled .hlogo{font-size:25px}
+.hlogo:hover{color:var(--gold2)}
+.hnav{display:flex;gap:clamp(18px,2.6vw,42px);justify-self:center}
+.hnav a{position:relative;text-decoration:none;color:var(--tx);opacity:.82;font-size:14.5px;letter-spacing:.09em;padding:10px 2px;transition:color .3s,opacity .3s}
+.hnav a::after{content:"";position:absolute;left:0;right:0;bottom:3px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.hnav a:hover,.hnav a:focus-visible,.hnav a[aria-current]{color:var(--gold2);opacity:1}
+.hnav a:hover::after,.hnav a:focus-visible::after,.hnav a[aria-current]::after{transform:scaleX(1)}
+.htools{justify-self:end;display:flex;align-items:center;gap:2px}
+.htools .ic{border:0;background:none;width:44px;height:44px;color:var(--tx);transition:color .25s,transform .25s}
+.htools .ic:hover{color:var(--gold2);transform:translateY(-1px)}
+.htools .ic svg{width:21px;height:21px}
+.htools #srchBtn{display:grid}
+.hburger{display:none;width:44px;height:44px;border:0;background:none;place-items:center;align-content:center;gap:5px;padding:0;color:var(--tx)}
+.hburger i{display:block;width:22px;height:1.5px;background:currentColor;transition:transform .35s,opacity .25s}
+.hburger[aria-expanded=true] i:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hburger[aria-expanded=true] i:nth-child(2){opacity:0}
+.hburger[aria-expanded=true] i:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+@media(max-width:1180px){
+.hdr-in{grid-template-columns:1fr auto;height:70px;padding:0 16px}
+.hdr.scrolled .hdr-in{height:60px}
+.hlogo{font-size:24px}.hdr.scrolled .hlogo{font-size:22px}
+.hburger{display:grid}
+.hnav{position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:rgba(0,0,0,.98);padding:0 24px;border-bottom:1px solid var(--ln);max-height:0;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(-8px);transition:max-height .45s cubic-bezier(.2,.7,.2,1),padding .45s,opacity .3s,transform .4s,visibility 0s .45s}
+.hnav.on{max-height:560px;padding:8px 24px 20px;opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.hnav a{padding:16px 0;font:400 20px var(--serif);letter-spacing:.05em;opacity:1;border-bottom:1px solid rgba(185,154,98,.16)}
+.hnav a::after{display:none}
+}
+@media(max-width:420px){.htools #srchBtn{display:none}.hlogo{font-size:21px}}
+
+/* Chiffres alignés sur les capitales (évite « KHADRE22I ») */
+html{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1,"kern" 1}
 </style>
 </head>
 <body>
 <div class="ann">Livraison à Dakar et dans toutes les régions du Sénégal. Paiement par Wave, Orange Money ou à la livraison.</div>
-<header><div class="wrap bar">
-<a class="logo" href="#accueil">KHADRE221</a>
-<nav id="nav">
-<a href="#collections">Collections</a><a href="#catalogue">Catalogue</a><a href="#offres">Offres</a><a href="#livraison">Contact</a><a href="#infos">À propos</a>
-</nav>
-<div class="tools">
-<button class="ic" id="srchBtn" aria-label="Rechercher un parfum"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg></button><button class="ic" id="favBtn" aria-label="Mes favoris"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.500-7-10a4 4 0 0 1 7-2.500A4 4 0 0 1 19 10c0 5.500-7 10-7 10z"/></svg><span id="fbdg" style="display:none">0</span></button><button class="ic" id="cartBtn" aria-label="Ouvrir le panier"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.200L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="bdg">0</span></button>
-<button class="ic" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-</div></div></header>
+<header class="hdr" id="hdr"><div class="hdr-in">
+<a class="hlogo" href="/#accueil" aria-label="KHADRE221, retour à l’accueil">KHADRE<b>221</b></a>
+<div class="hnav" id="hnav" role="navigation" aria-label="Navigation principale"><a href="/#collections">Collections</a><a href="/#catalogue">Catalogue</a><a href="/#offres">Offres</a><a href="/#livraison">Contact</a><a href="/#infos">À propos</a><a href="#" onclick="openTrack();return false">Suivre ma commande</a></div>
+<div class="htools"><button class="ic" id="srchBtn" aria-label="Rechercher un parfum"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg></button><button class="ic" id="favBtn" aria-label="Mes favoris"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.500-7-10a4 4 0 0 1 7-2.500A4 4 0 0 1 19 10c0 5.500-7 10-7 10z"/></svg><span id="fbdg" style="display:none">0</span></button><button class="ic" id="cartBtn" aria-label="Ouvrir le panier"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.200L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span id="bdg">0</span></button><button class="hburger" id="hburger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="hnav"><i></i><i></i><i></i></button></div>
+</div></header>
 
 <main>
 <div class="hero" id="accueil"><div class="wrap">
@@ -374,8 +411,6 @@ $("#heroV").innerHTML='<img class="ph" src="/img/9.jpg" alt="Baccarat Rouge 540,
 $("#cartBtn").onclick=openC;$("#closeC").onclick=closeAll;$("#order").onclick=openCk;
 $("#ov").onclick=closeAll;
 $("#mod").onclick=function(e){if(e.target==this)closeAll()};
-$("#burger").onclick=function(){$("#nav").classList.toggle("on")};
-$("#nav").onclick=function(){this.classList.remove("on")};
 document.addEventListener("keydown",function(e){if(e.key=="Escape")closeAll()});
 function fillBr(){var BR=[];P.forEach(function(p){if(BR.indexOf(p.br)<0)BR.push(p.br)});
 $("#br").innerHTML='<option value="">Toutes les marques</option>'+BR.map(function(b){return '<option>'+b+'</option>'}).join("");
@@ -391,6 +426,22 @@ var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es
 document.querySelectorAll(".rv").forEach(function(el){io?io.observe(el):el.classList.add("on")});
 function load(){fetch("/api/products").then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){P=d.products;Z=d.zones;Object.keys(cart).forEach(function(i){var p=byId(i);if(!p||p.q<1)delete cart[i];else if(cart[i]>p.q)cart[i]=p.q});save();fillBr();rCat();rOff();rBest();rCart()}).catch(function(){$("#cat").innerHTML='<p class="empty">Le catalogue est momentanément indisponible. Veuillez réessayer dans un instant.</p>'})}
 updF();load();
+
+(function(){
+ var hd=$("#hdr"),hn=$("#hnav"),hb=$("#hburger");
+ function set(o){hn.classList.toggle("on",o);hb.setAttribute("aria-expanded",o?"true":"false");hb.setAttribute("aria-label",o?"Fermer le menu":"Ouvrir le menu")}
+ hb.onclick=function(){set(!hn.classList.contains("on"))};
+ hn.addEventListener("click",function(e){if(e.target.closest("a"))set(false)});
+ document.addEventListener("keydown",function(e){if(e.key=="Escape"&&hn.classList.contains("on")){set(false);hb.focus()}});
+ document.addEventListener("click",function(e){if(!hd.contains(e.target))set(false)});
+ window.addEventListener("resize",function(){if(window.innerWidth>1180)set(false)});
+ var t=false;function sc(){hd.classList.toggle("scrolled",window.scrollY>24);t=false}
+ window.addEventListener("scroll",function(){if(!t){t=true;requestAnimationFrame(sc)}},{passive:true});sc();
+ var L={};hn.querySelectorAll("a[href^='/#']").forEach(function(a){L[a.getAttribute("href").slice(2)]=a});
+ function cur(id){Object.keys(L).forEach(function(k){if(k==id)L[k].setAttribute("aria-current","true");else L[k].removeAttribute("aria-current")})}
+ if("IntersectionObserver" in window){var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)cur(e.target.id)})},{rootMargin:"-40% 0px -55% 0px"});
+  ["accueil","collections","catalogue","offres","livraison","infos"].forEach(function(id){var el=document.getElementById(id);if(el)so.observe(el)})}
+})();
 </script>
 </body>
 </html>
