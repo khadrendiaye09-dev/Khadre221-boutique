@@ -1,13 +1,63 @@
 'use strict';
 // KHADRE221 : serveur de la boutique (aucune dépendance, Node 18+)
 const http=require('http'),fs=require('fs'),path=require('path'),crypto=require('crypto');
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 const PORT=+process.env.PORT||3000,DATA=process.env.DATA_DIR||path.join(__dirname,'data'),PUB=path.join(__dirname,'public'),ADMIN=process.env.ADMIN_PASSWORD;
 if(!ADMIN||ADMIN.length<8){console.error('Définissez la variable ADMIN_PASSWORD (8 caractères minimum).');process.exit(1)}
 fs.mkdirSync(path.join(DATA,'uploads'),{recursive:true});
-const DBF=path.join(DATA,'db.json');
-const db=JSON.parse(fs.readFileSync(fs.existsSync(DBF)?DBF:path.join(__dirname,'seed.json'),'utf8'));
-const save=()=>{fs.writeFileSync(DBF+'.tmp',JSON.stringify(db));fs.renameSync(DBF+'.tmp',DBF)};
-save();
+
+let db;
+let saveQueue = Promise.resolve();
+
+async function initDb(){
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS app_state (
+      id INTEGER PRIMARY KEY,
+      data JSONB NOT NULL,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    )
+  `);
+
+  const result = await pool.query(
+    'SELECT data FROM app_state WHERE id = 1'
+  );
+
+  if(result.rows.length){
+    db = result.rows[0].data;
+  }else{
+    db = JSON.parse(
+      fs.readFileSync(path.join(__dirname,'seed.json'),'utf8')
+    );
+
+    await pool.query(
+      'INSERT INTO app_state (id,data) VALUES (1,$1::jsonb) ON CONFLICT (id) DO NOTHING',
+      [JSON.stringify(db)]
+    );
+
+    const check = await pool.query(
+      'SELECT data FROM app_state WHERE id = 1'
+    );
+    db = check.rows[0].data;
+  }
+}
+
+function save(){
+  const snapshot = JSON.stringify(db);
+
+  saveQueue = saveQueue.then(() =>
+    pool.query(
+      'UPDATE app_state SET data=$1::jsonb, updated_at=NOW() WHERE id=1',
+      [snapshot]
+    )
+  );
+
+  return saveQueue;
+}
 const MIME={'.html':'text/html; charset=utf-8','.jpg':'image/jpeg','.png':'image/png','.webp':'image/webp','.ico':'image/x-icon'};
 const STATUS=['Nouvelle','Confirmée','En livraison','Livrée','Annulée'],PAY=['Wave','Orange Money','Paiement à la livraison'];
 const sessions=new Map(),hits=new Map();
@@ -42,7 +92,7 @@ async function notifyWhatsApp(o){
   }catch(e){console.error('Notification WhatsApp impossible : '+e.message)}
 }
 function notify(o){notifyMail(o);notifyWhatsApp(o)}
-function createOrder(b){
+async function createOrder(b){
   if(b.hp)return{ref:'KH-00000'};
   const nom=str(b.nom,80),ville=str(b.ville,60),quartier=str(b.quartier,60),adr=str(b.adr,160),note=str(b.note,300),pay=str(b.pay,40);
   const tel=str(b.tel,25).replace(/\D/g,'').replace(/^(00)?221/,'');
@@ -63,14 +113,14 @@ function createOrder(b){
   lines.forEach(l=>{db.products.find(x=>x.id===l.id).q-=l.q});
   const ref='KH-'+String(++db.seq).padStart(5,'0');
   db.orders.unshift({ref,date:new Date().toISOString(),status:'Nouvelle',paid:false,nom,tel,zone:z[0],delai:z[2],ville,quartier,adr,note,pay,lines,sub,fee:z[1],total:sub+z[1]});
-  save();return{ref};
+ await save();return{ref};
 }
 function saveImage(d){
   const m=/^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/=]+)$/.exec(d||'');if(!m)throw new Error('Image invalide (JPG, PNG ou WebP).');
   const buf=Buffer.from(m[2],'base64');if(buf.length>4e6)throw new Error('Image trop lourde (4 Mo maximum).');
   const f='p'+Date.now()+'.'+(m[1]=='jpeg'?'jpg':m[1]);fs.writeFileSync(path.join(DATA,'uploads',f),buf);return'/uploads/'+f;
 }
-function upsertProduct(b){
+async function upsertProduct(b){
   const p={br:str(b.br,50),b:str(b.b||b.br,12).toUpperCase(),n:str(b.n,60),c:['Homme','Femme','Mixte'].includes(b.c)?b.c:'Mixte',p:num(b.p,5e6),o:num(b.o,5e6),t:['','new','promo'].includes(b.t)?b.t:'',bs:b.bs?1:0,q:num(b.q,9999),active:!!b.active,e:str(b.e,40),s:str(b.s,20),f:str(b.f,60),top:str(b.top,160),heart:str(b.heart,160),base:str(b.base,160),d:str(b.d,400)};
   if(!p.n||!p.br||!p.p)throw new Error('Nom, marque et prix sont obligatoires.');
   let cur=b.id?db.products.find(x=>x.id===+b.id):null;
@@ -78,7 +128,7 @@ function upsertProduct(b){
   const img=b.image?saveImage(b.image):null;
   if(cur)Object.assign(cur,p,img?{img}:{});
   else{if(!img)throw new Error('Une photo est obligatoire pour un nouveau parfum.');db.products.push(Object.assign({id:Math.max(0,...db.products.map(x=>x.id))+1,img},p))}
-  save();
+  await save();
 }
 function stats(){
   const ok=db.orders.filter(o=>o.status!=='Annulée'),top={},byStatus={};
@@ -92,7 +142,7 @@ async function api(req,res,u){
   if(m==='GET'&&p==='/api/products')return send(res,200,{products:db.products.filter(x=>x.active).map(pub),zones:db.zones});
   if(m==='POST'&&p==='/api/orders'){
     if(limited('o'+ip,8,36e5))return send(res,429,{error:'Trop de commandes depuis votre connexion. Réessayez plus tard ou appelez-nous.'});
-    const out=createOrder(await body(req));if(out.ref!=='KH-00000')notify(db.orders[0]);return send(res,200,out);
+    const out=await createOrder(await body(req));if(out.ref!=='KH-00000')notify(db.orders[0]);return send(res,200,out);
   }
   if(m==='GET'&&p==='/api/track'){
     if(limited('t'+ip,20,6e5))return send(res,429,{error:'Trop de tentatives, réessayez dans quelques minutes.'});
@@ -121,10 +171,10 @@ async function api(req,res,u){
       o.status=b.status;
     }
     if(b.paid!==undefined)o.paid=!!b.paid;
-    save();return send(res,200,{ok:1});
+   await save();return send(res,200,{ok:1});
   }
-  if(m==='POST'&&p==='/api/admin/product'){upsertProduct(await body(req));return send(res,200,{ok:1})}
-  if(m==='POST'&&p==='/api/admin/product/delete'){const b=await body(req);db.products=db.products.filter(x=>x.id!==+b.id);save();return send(res,200,{ok:1})}
+if(m==='POST'&&p==='/api/admin/product'){await upsertProduct(await body(req));return send(res,200,{ok:1})}
+ if(m==='POST'&&p==='/api/admin/product/delete'){const b=await body(req);db.products=db.products.filter(x=>x.id!==+b.id);await save();return send(res,200,{ok:1})}
   send(res,404,{error:'Introuvable'});
 }
 function serve(req,res,u){
@@ -136,8 +186,27 @@ function serve(req,res,u){
   if(f.endsWith('admin.html'))h['X-Robots-Tag']='noindex';
   res.writeHead(200,h);fs.createReadStream(f).pipe(res);
 }
-http.createServer(async(req,res)=>{
-  res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Referrer-Policy','same-origin');
-  try{const u=new URL(req.url,'http://x');u.pathname.startsWith('/api/')?await api(req,res,u):serve(req,res,u)}
-  catch(e){if(!res.headersSent)send(res,400,{error:e.message||'Erreur'})}
-}).listen(PORT,()=>console.log('KHADRE221 en ligne sur le port '+PORT));
+async function start(){
+  await initDb();
+
+  http.createServer(async(req,res)=>{
+    res.setHeader('X-Content-Type-Options','nosniff');
+    res.setHeader('X-Frame-Options','DENY');
+    res.setHeader('Referrer-Policy','same-origin');
+
+    try{
+      const u=new URL(req.url,'http://x');
+      u.pathname.startsWith('/api/')?await api(req,res,u):serve(req,res,u);
+    }catch(e){
+      console.error(e);
+      if(!res.headersSent)send(res,400,{error:e.message||'Erreur'});
+    }
+  }).listen(PORT,()=>console.log('KHADRE221 en ligne sur le port '+PORT));
+}
+
+start().catch(e=>{
+  console.error('Erreur de démarrage:',e);
+  process.exit(1);
+});
+
+  
