@@ -419,7 +419,7 @@ $("#brands").innerHTML=BR.map(function(b){return '<span>'+b+'</span>'}).join("")
 function rBest(){$("#bestg").innerHTML=P.filter(function(p){return p.bs}).slice(0,4).map(card).join("")}
 function updF(){var n=Object.keys(favs).length,b=$("#fbdg");b.textContent=n;b.style.display=n?"grid":"none"}
 var CL=[["Homme","Hommes",1,"Pour lui"],["Femme","Femmes",6,"Pour elle"],["Mixte","Mixtes",9,"Pour tous"]];
-$("#cols").innerHTML=CL.map(function(c){return '<a href="#catalogue" onclick="setF(\''+c[0]+'\')"><img src="/img/'+c[2]+'.jpg" alt="Collection '+c[1]+'" loading="lazy"><span><small>'+c[3]+'</small><b>'+c[1]+'</b></span></a>'}).join("");
+$("#cols").innerHTML='<a href="#catalogue" onclick="setF(\'Homme\')"><img src="/img/la-nuit-de-lhomme.jpeg" alt="Collection Hommes" loading="lazy"><span><small>Pour lui</small><b>Hommes</b></span></a><a href="#catalogue" onclick="setF(\'Femme\')"><img src="/img/peony.jpeg" alt="Collection Femmes" loading="lazy"><span><small>Pour elle</small><b>Femmes</b></span></a><a href="#catalogue" onclick="setF(\'Mixte\')"><img src="/img/vanilla-extreme.jpeg" alt="Collection Mixtes" loading="lazy"><span><small>Pour tous</small><b>Mixtes</b></span></a>';
 $("#srchBtn").onclick=function(){$("#catalogue").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#q").focus()},600)};
 $("#favBtn").onclick=function(){setF("Fav");$("#catalogue").scrollIntoView({behavior:"smooth"})};
 var io="IntersectionObserver" in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("on");io.unobserve(e.target)}})},{threshold:.1}):null;
