@@ -60,18 +60,25 @@ function vProducts(){
  <label>Catégorie<select id="f_c">${['Homme','Femme','Mixte'].map(c=>`<option${e.c===c?' selected':''}>${c}</option>`).join('')}</select></label>
  <label>Étiquette<select id="f_t"><option value="">Aucune</option><option value="new"${e.t==='new'?' selected':''}>Nouveau</option><option value="promo"${e.t==='promo'?' selected':''}>Promotion</option></select></label>
  <label class="w">Description<textarea id="f_d" rows="2">${esc(e.d)}</textarea></label>
- <label>Photo${e.id?' (laisser vide pour garder l’actuelle)':''}<input id="f_img" type="file" accept="image/jpeg,image/png,image/webp"></label>
+<label>Lien de l'image (ex: /img/peony.jpeg)<input id="f_img_url" type="text" placeholder="/img/peony.jpeg" value="${esc(e.img||'')}"></label>
+<label>Ou uploader un fichier (optionnel)<input id="f_img" type="file" accept="image/jpeg,image/png,image/webp"></label>
  <label><span><input id="f_active" type="checkbox" style="width:auto"${e.active?' checked':''}> Visible sur le site</span></label>
  <label><span><input id="f_bs" type="checkbox" style="width:auto"${e.bs?' checked':''}> Meilleure vente</span></label>
  <div class="w"><button class="p" onclick="saveP()">Enregistrer</button> <button onclick="editing=null;render()">Annuler</button></div></div>`:'';
- return f+`<p><button class="p" onclick="editing={active:true,c:'Mixte',e:'Eau de parfum',s:'100 ml',q:10};render()">Ajouter un parfum</button></p>`+D.products.map(p=>`<div class="pr"><img src="${esc(p.img)}" alt=""><div><b>${esc(p.br)} ${esc(p.n)}</b>${p.active?'':' <small class="mu">(masqué)</small>'}<br><small class="mu">${esc(p.c)} · ${fmt(p.p)}${p.o?' (avant '+fmt(p.o)+')':''} · stock : ${p.q}</small></div><div><button onclick="editing=D.products.find(x=>x.id===${p.id});render();scrollTo(0,0)">Modifier</button> <button class="d" onclick="delP(${p.id})">Supprimer</button></div></div>`).join('')}
+ return f+`<p><button class="p" onclick="editing={active:true,c:'Mixte',e:'Eau de parfum',s:'100 ml',q:10};render()">Ajouter un parfum</button></p>`+D.products.map(p=>`<div class="pr"><img src="${esc(p.img)}" alt="" onerror="this.src='https://via.placeholder.com/56?text=?'"><div><b>${esc(p.br)} ${esc(p.n)}</b>${p.active?'':' <small class="mu">(masqué)</small>'}<br><small class="mu">${esc(p.c)} · ${fmt(p.p)}${p.o?' (avant '+fmt(p.o)+')':''} · stock : ${p.q}</small></div><div><button onclick="editing=D.products.find(x=>x.id===${p.id});render();scrollTo(0,0)">Modifier</button> <button class="d" onclick="delP(${p.id})">Supprimer</button></div></div>`).join('')}
 function readImg(file){return new Promise((ok,ko)=>{if(!file)return ok(null);const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=ko;r.readAsDataURL(file)})}
 async function saveP(){
  try{
   const g=i=>$('#f_'+i),b={id:editing.id};
   ['n','br','b','e','s','f','top','heart','base','d','c','t'].forEach(k=>b[k]=g(k).value);
   ['p','o','q'].forEach(k=>b[k]=+g(k).value||0);b.active=g('active').checked;b.bs=g('bs').checked;
-  b.image=await readImg(g('img').files[0]);
+  const url = g('img_url').value.trim();
+const file = g('img').files[0];
+if (url) {
+    b.image = url;
+} else if (file) {
+    b.image = await readImg(file);
+}
   await api('/api/admin/product',b);editing=null;D=await api('/api/admin/data');render()
  }catch(e){err(e)}}
 async function delP(id){if(!confirm('Supprimer ce parfum définitivement ? (Vous pouvez aussi le masquer.)'))return;try{await api('/api/admin/product/delete',{id});D=await api('/api/admin/data');render()}catch(e){err(e)}}
