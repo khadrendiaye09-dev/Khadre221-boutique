@@ -125,7 +125,14 @@ async function upsertProduct(b){
   if(!p.n||!p.br||!p.p)throw new Error('Nom, marque et prix sont obligatoires.');
   let cur=b.id?db.products.find(x=>x.id===+b.id):null;
   if(b.id&&!cur)throw new Error('Produit introuvable.');
-  const img=b.image?saveImage(b.image):null;
+ let img = null;
+if (b.image) {
+    if (b.image.startsWith('/img/') || b.image.startsWith('http')) {
+        img = b.image;
+    } else {
+        img = saveImage(b.image);
+    }
+}
   if(cur)Object.assign(cur,p,img?{img}:{});
   else{if(!img)throw new Error('Une photo est obligatoire pour un nouveau parfum.');db.products.push(Object.assign({id:Math.max(0,...db.products.map(x=>x.id))+1,img},p))}
   await save();
